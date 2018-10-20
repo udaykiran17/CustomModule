@@ -1,0 +1,163 @@
+<?php
+
+/**
+* My Form
+*/
+
+function student_form($form,&$form_state){
+  $form['name']=array(
+    '#type'=>'textfield',
+    '#title'=>t('Student Name:'),
+    '#size'=>50,
+    '#required'=>TRUE,
+  );
+  $form['marks']=array(
+    '#type'=>'textfield',
+    '#title'=>t(' Student Marks:'),
+    '#size'=>3,
+    '#required'=>TRUE,
+  );
+  $form['subject']=array(
+    '#type'=>'textfield',
+    '#title'=>t(' Subject:'),
+    '#size'=>3,
+    '#required'=>TRUE,
+  );
+  $form['class']=array(
+    '#type'=>'textfield',
+    '#title'=>t('Class'),
+    '#size'=>3,
+    '#required'=>TRUE,
+  );
+  $form['submit']=array(
+    '#type'=>'submit',
+    '#value'=>t('Add Student'),
+  );
+  return $form;
+}
+
+/*
+function task_menu() {
+  $items = array();
+
+  $items['task'] = array(
+    'title' => 'Registration Form',
+    'description' => 'Shows registration form with first name and last name.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('proxies_form'),
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+<form action="
+/*
+function task_menu() {
+  $items = array();
+  $items['file/ajax'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => 'drupal
+    'delivery callback' => 'ajax_deliver',
+    'type' => MENU_CALLBACK,
+  );
+  $items['file/progress'] = array(
+    'page callback' => 'file_ajax_progress',
+    'access arguments' => array(
+      'access content',
+    ),
+    'theme callback' => 'ajax_base_page_theme',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+*/
+
+/**
+* Implementing hook_block_info()
+*/
+
+
+/**
+* Implements hook_permission().
+*/
+
+function student_permission(){
+  return array(
+    'submit task'=>array(
+      'title'=>t('Submit task'),
+      'description'=>t('Submit the form'),
+    ),
+    'access task submission'=>array(
+      'title'=>t('Access the task submissions'),
+      'description'=>t('Access the task submissions'),
+    ),
+    'access delete'=>array(
+      'title'=>t('Access the delete page'),
+      'description'=>t('Access the delete page'),
+    ),
+  );
+}
+
+/**
+* Implements hook_menu()
+*/
+
+function student_menu(){
+  $items=array();
+  $items['student']=array(
+    'title'=>'Student Form',
+      'type'=>MENU_NORMAL_ITEM,
+      'access arguments'=>array('submit task'),
+      'page callback'=>'drupal_get_form',
+      'page arguments'=>array('student_form'),
+      'access callback'=>TRUE,
+  );
+  $items['formsubmissions']=array(
+    'title'=>'My Form Submissions',
+    'type'=>MENU_NORMAL_ITEM,
+    'access arguments'=>array('access form submissions'),
+    'page callback'=>'student_submissions',
+    'access callback'=>TRUE,
+  );
+  $items['formsubmissions/%/delete']=array(
+    'title'=>'My Form Submissions',
+    'type'=>MENU_NORMAL_ITEM,
+    'access arguments'=>array('access task_form_delete'),
+    'page callback'=>'student_form_delete',
+    'page argument'=>array(3),
+    'access callback'=>TRUE,
+  );
+ /* $items['formsubmissions/%/edit']=array(
+    'title'=>'My Form Submissions',
+    'type'=>MENU_NORMAL_ITEM,
+    'access arguments'=>array('access form submissions'),
+    'page callback'=>'task_form_edit',
+    'page argument'=>array(3),
+    'access callback'=>TRUE,
+  );  */
+  return $items;
+}
+
+/**
+* Submit handler for my form
+*/
+
+function task_form_submit($form,&$form_state){
+  $st_id = db_insert('student')
+  ->fields(array(
+    'name'=>$form_state['values']['name'],
+    'marks'=>$form_state['values']['marks'],
+    'subject'=>$form_state['values']['subject'],
+    'class'=>$form_state['values']['class'],
+
+  ))
+  ->execute();
+  drupal_set_message(t('Entry has been added.'));
+}
+
+
+
+
+
+?>
