@@ -12,8 +12,9 @@ function student_permission(){
     ),
     'access delete'=>array(
       'title'=>t('access the delete page'),
-      'description'=>t('acess the delete page'),
+      'description'=>t('access the delete page'),
     ),
+
 
   );
 
@@ -24,7 +25,7 @@ function student_permission(){
 function student_menu(){
 $items=array();
 $items['student']=array(
-'title'=>'Student Information Form',
+'title'=>'Student Registration Form',
 'type'=>MENU_NORMAL_ITEM,
 'access arguments'=>array('submit student'),
 'page callback'=>'drupal_get_form',
@@ -33,7 +34,7 @@ $items['student']=array(
 );
 
 $items['formlist']=array(
-  'title'=>'my form list',
+  'title'=>'Student Records',
   'type'=>MENU_NORMAL_ITEM,
   'access arguments'=>array('access form list'),
   'page callback'=>'student_list',
@@ -92,6 +93,7 @@ function student_form($form,&$form_state){
         );
         return $form;
 }
+
 
 
 function student_form_submit($form, &$form_state){
@@ -211,3 +213,4 @@ else {
    ->execute();
    drupal_set_message(t('Student records  has been added.'));
  }
+
