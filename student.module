@@ -1,155 +1,114 @@
 <?php
 
-/**
-* My Form
-*/
-
-function student_form($form,&$form_state){
-  $form['name']=array(
-    '#type'=>'textfield',
-    '#title'=>t('Student Name:'),
-    '#size'=>50,
-    '#required'=>TRUE,
-  );
-  $form['marks']=array(
-    '#type'=>'textfield',
-    '#title'=>t(' Student Marks:'),
-    '#size'=>3,
-    '#required'=>TRUE,
-  );
-  $form['subject']=array(
-    '#type'=>'textfield',
-    '#title'=>t(' Subject:'),
-    '#size'=>3,
-    '#required'=>TRUE,
-  );
-  $form['class']=array(
-    '#type'=>'textfield',
-    '#title'=>t('Class'),
-    '#size'=>3,
-    '#required'=>TRUE,
-  );
-  $form['submit']=array(
-    '#type'=>'submit',
-    '#value'=>t('Add Student'),
-  );
-  return $form;
-}
-
-/*
-function task_menu() {
-  $items = array();
-
-  $items['task'] = array(
-    'title' => 'Registration Form',
-    'description' => 'Shows registration form with first name and last name.',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('proxies_form'),
-    'access callback' => TRUE,
-  );
-
-  return $items;
-}
-<form action="
-/*
-function task_menu() {
-  $items = array();
-  $items['file/ajax'] = array(
-    'page callback' => 'drupal_get_form',
-    'page arguments' => 'drupal
-    'delivery callback' => 'ajax_deliver',
-    'type' => MENU_CALLBACK,
-  );
-  $items['file/progress'] = array(
-    'page callback' => 'file_ajax_progress',
-    'access arguments' => array(
-      'access content',
-    ),
-    'theme callback' => 'ajax_base_page_theme',
-    'type' => MENU_CALLBACK,
-  );
-  return $items;
-}
-
-*/
-
-/**
-* Implementing hook_block_info()
-*/
-
-
-/**
-* Implements hook_permission().
-*/
-
 function student_permission(){
   return array(
-    'submit task'=>array(
-      'title'=>t('Submit task'),
-      'description'=>t('Submit the form'),
+    'submit student'=>array(
+      'title'=>t('submit student'),
+      'description'=>t('submit the form'),
     ),
-    'access task submission'=>array(
-      'title'=>t('Access the task submissions'),
-      'description'=>t('Access the task submissions'),
+    'access student list'=>array(
+      'title'=>t('access the student list'),
+      'discription'=>t('access the student list'),
     ),
     'access delete'=>array(
-      'title'=>t('Access the delete page'),
-      'description'=>t('Access the delete page'),
+      'title'=>t('access the delete page'),
+      'description'=>t('acess the delete page'),
     ),
+
   );
+
 }
 
-/**
-* Implements hook_menu()
-*/
 
+/**
+ * @return array
+ */
 function student_menu(){
-  $items=array();
-  $items['student']=array(
-    'title'=>'Student Form',
-      'type'=>MENU_NORMAL_ITEM,
-      'access arguments'=>array('submit task'),
-      'page callback'=>'drupal_get_form',
-      'page arguments'=>array('student_form'),
-      'access callback'=>TRUE,
-  );
-  $items['formsubmissions']=array(
-    'title'=>'My Form Submissions',
-    'type'=>MENU_NORMAL_ITEM,
-    'access arguments'=>array('access form submissions'),
-    'page callback'=>'student_submissions',
-    'access callback'=>TRUE,
-  );
-  $items['formsubmissions/%/delete']=array(
-    'title'=>'My Form Submissions',
-    'type'=>MENU_NORMAL_ITEM,
-    'access arguments'=>array('access task_form_delete'),
-    'page callback'=>'student_form_delete',
-    'page argument'=>array(3),
-    'access callback'=>TRUE,
-  );
- /* $items['formsubmissions/%/edit']=array(
-    'title'=>'My Form Submissions',
-    'type'=>MENU_NORMAL_ITEM,
-    'access arguments'=>array('access form submissions'),
-    'page callback'=>'task_form_edit',
-    'page argument'=>array(3),
-    'access callback'=>TRUE,
-  );  */
-  return $items;
+$items=array();
+$items['student']=array(
+'title'=>'Student Information Form',
+'type'=>MENU_NORMAL_ITEM,
+'access arguments'=>array('submit student'),
+'page callback'=>'drupal_get_form',
+'page arguments'=>array('student_form'),
+'access callback'=>True,
+);
+
+$items['formlist']=array(
+  'title'=>'my form list',
+  'type'=>MENU_NORMAL_ITEM,
+  'access arguments'=>array('access form list'),
+  'page callback'=>'student_list',
+  'access callback'=>TRUE,
+);
+
+$items['formlist/%/delete']=array(
+  'title'=>'My Form List',
+  'type'=>MENU_NORMAL_ITEM,
+  'access arguments'=>array('access student_form_delete'),
+  'page callback'=>'student_form_delete',
+  'page argument'=>array(3),
+  'access callback'=>TRUE,
+);
+$items['formlist/%/edit']=array(
+  'title'=>'My Form List',
+  'type'=>MENU_NORMAL_ITEM,
+  'page callback'=>'drupal_get_form',
+  'access arguments'=>array('access student_form_edit'),
+  'page arguments'=>array('student_edit_form'),
+  'page argument'=>array(1),
+  'access callback'=>TRUE,
+);
+return $items;
+}
+
+
+function student_form($form,&$form_state){
+
+
+
+    $form['st_fnm']=array(
+      '#type'=>'textfield',
+      '#title'=>t('Student First Name:'),
+      '#size'=>25,
+      '#required'=>TRUE,
+    );
+      $form['st_lnm']=array(
+        '#type'=>'textfield',
+        '#title'=>t('Student Last Name:'),
+        '#size'=>25,
+        '#required'=>TRUE,
+      );
+     $form['st_email']=array(
+        '#type'=>'textfield',
+        '#title'=>t('Student Email:'),
+        '#size'=>25,
+        '#required'=>TRUE,
+      );
+
+
+
+        $form['submit']=array(
+          '#type'=>'submit',
+          '#value'=>t('Submit'),
+        );
+        return $form;
 }
 
 /**
-* Submit handler for my form
-*/
+ * @param $form
+ * @param $form_state
+ * @throws Exception
+ */
+function student_form_submit($form, &$form_state){
+  $st_id=db_insert('student')
 
-function task_form_submit($form,&$form_state){
-  $st_id = db_insert('student')
   ->fields(array(
-    'name'=>$form_state['values']['name'],
-    'marks'=>$form_state['values']['marks'],
-    'subject'=>$form_state['values']['subject'],
-    'class'=>$form_state['values']['class'],
+    'st_fnm'=>$form_state['values']['st_fnm'],
+    'st_lnm'=>$form_state['values']['st_lnm'],
+    'st_email'=>$form_state['values']['st_email'],
+
+
 
   ))
   ->execute();
@@ -157,7 +116,119 @@ function task_form_submit($form,&$form_state){
 }
 
 
+/**
+ * @return string
+ * @throws Exception
+ */
+function student_list(){
+  $query=db_select('student','st');
+  $query
+  ->fields('st',array('st_id','st_fnm','st_lnm','st_email'))
+  ->range(0,50)
+  ->orderby('st.st_id');
+
+  $results = $query->execute();
+  $header = array(t('ID'),t('Student First Name'),t('Student Last Name'),t('E-mail'),t('Delete'),t('Edit'));
+  $rows=array();
+
+  foreach($results AS $result){
+    $rows[]=array(
+      check_plain($result->st_id),
+      check_plain($result->st_fnm),
+      check_plain($result->st_lnm),
+      check_plain($result->st_email),
+
+      l('Delete', 'formlist/'.$result->st_id.'/delete'),
+      l('Edit', 'formlist/'.$result->st_id.'/edit'),
+
+
+    );
+  }
+  return theme('table',array('header'=>$header,'rows'=>$rows));
+}
+
+function student_form_delete(){
+  $ID=arg(1);
+  $num_deleted = db_delete('student')
+  ->condition('st_id',$ID)
+   ->execute();
+   if($num_deleted){
+     drupal_set_message(t('Student records  has been deleted.'));
+     drupal_goto("formlist");
+   }
+else {
+
+  drupal_set_message(t('error in query'));
+}
+
+}
+/*function student_form_update(){
+  $ID=arg(1);
+  $num_updated = db_update('student') // Table name no longer needs {}
+ ->fields(array(
+
+   'st_email' => 'test@gmail.com'
+
+ ))
+ ->condition('st_id',$ID)
+ ->execute();
+
+}
+*/
 
 
 
-?>
+ function student_edit_form(){
+   $form  = array();
+   $ID=arg(1);
+
+   $result=db_query('SELECT * FROM {student} WHERE st_id='.$ID);
+
+   $record=$result->fetchObject();
+
+
+     $form['st_fnm']=array(
+       '#type'=>'textfield',
+       '#title'=>t('Student First Name:'),
+       '#size'=>25,
+       '#required'=>TRUE,
+       '#value'=>t($record->st_fnm),
+     );
+       $form['st_lnm']=array(
+         '#type'=>'textfield',
+         '#title'=>t('Student Last Name:'),
+         '#size'=>25,
+         '#required'=>TRUE,
+         '#value'=>t($record->st_lnm),
+
+       );
+         $form['st_email']=array(
+           '#type'=>'textfield',
+           '#title'=>t('Email:'),
+           '#size'=>25,
+           '#required'=>TRUE,
+           '#value'=>t($record->st_email),
+         );
+
+
+         $form['submit']=array(
+           '#type'=>'submit',
+           '#value'=>t('update'),
+         );
+         return $form;
+ }
+ function student_edit_form_submit($form,&$form_state){
+  $ID=arg(1);
+  $st_id=db_update('student')
+  ->fields(array(
+
+     'st_fnm'=>$form_state['input']['st_fnm'],
+     'st_lnm'=>$form_state['input']['st_lnm'],
+     'st_email'=>$form_state['input']['st_email'],
+
+
+   ))
+   ->condition('st_id',$ID,'=')
+   ->execute();
+   drupal_set_message(t('Student records  has been added.'));
+ }
