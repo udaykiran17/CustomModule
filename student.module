@@ -20,9 +20,7 @@ function student_permission(){
 }
 
 
-/**
- * @return array
- */
+
 function student_menu(){
 $items=array();
 $items['student']=array(
@@ -95,11 +93,7 @@ function student_form($form,&$form_state){
         return $form;
 }
 
-/**
- * @param $form
- * @param $form_state
- * @throws Exception
- */
+
 function student_form_submit($form, &$form_state){
   $st_id=db_insert('student')
 
@@ -116,10 +110,7 @@ function student_form_submit($form, &$form_state){
 }
 
 
-/**
- * @return string
- * @throws Exception
- */
+
 function student_list(){
   $query=db_select('student','st');
   $query
@@ -162,19 +153,7 @@ else {
 }
 
 }
-/*function student_form_update(){
-  $ID=arg(1);
-  $num_updated = db_update('student') // Table name no longer needs {}
- ->fields(array(
 
-   'st_email' => 'test@gmail.com'
-
- ))
- ->condition('st_id',$ID)
- ->execute();
-
-}
-*/
 
 
 
