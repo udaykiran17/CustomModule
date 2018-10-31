@@ -1,16 +1,12 @@
 <?php
 
-
 /**
  * @return array
  */
 function student_schema() {
-
   $schema = [];
   $schema['student'] = [
     'description' => 'A student table.',
-
-
     'fields' => [
       'st_id' => [
         'description' => 'the student ID',
@@ -18,8 +14,6 @@ function student_schema() {
         'unsigned' => TRUE,
         'not null' => TRUE,
       ],
-
-
       'st_fnm' => [
         'description' => 'A fields for student first name',
         'type' => 'varchar',
@@ -27,8 +21,6 @@ function student_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-
-
       'st_lnm' => [
         'description' => 'A fields for student last name',
         'type' => 'varchar',
@@ -36,8 +28,6 @@ function student_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-
-
       'st_email' => [
         'description' => 'A fields Email',
         'type' => 'varchar',
@@ -45,13 +35,9 @@ function student_schema() {
         'not null' => TRUE,
         'default' => '',
       ],
-
-
     ],
     'primary key' => ['st_id'],
   ];
-
-
   return $schema;
 }
 
