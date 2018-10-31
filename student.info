@@ -1,5 +1,3 @@
 name = student
-description = Export the members who have loged in with first and last name.
+description = Student form and student records.
 core = 7.x
-
-
