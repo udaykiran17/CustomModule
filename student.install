@@ -1,7 +1,12 @@
 <?php
 
 /**
- * @return array
+ * @file
+ * Creating a table for student records.
+ */
+
+/**
+ * Implements hook_schema().
  */
 function student_schema() {
   $schema = [];
@@ -40,5 +45,3 @@ function student_schema() {
   ];
   return $schema;
 }
-
-
